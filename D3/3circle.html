@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Venn Diagrams with D3.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="author" content="Ben Frederickson">
+
+
+    <link href="http://static.benfrederickson.com.s3-website-us-east-1.amazonaws.com/bootstrap-3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!--prettify.css -->
+    <style>
+        .navbar-default {
+             background-color: #FAFAFA;
+        }
+        .navbar-default .navbar-brand a {
+            color: #333;
+            padding-bottom: 4px;
+            text-decoration: none;
+        }
+
+        .navbar-default .navbar-nav > li > a {
+            color: #333;
+            font-size:16px;
+            padding-bottom: 4px;
+        }
+
+        .navbar-default .navbar-nav > li > a > i {
+            font-size: 20px;
+        }
+
+        .navbar-default .navbar-nav > li > a:hover {
+            color: #003;
+        }
+
+        .navbar-default .navbar-icons > li > a:hover {
+            border-bottom-style: solid;
+            border-width: 3px;
+        }
+
+        .navbar-default .navbar-brand a:hover {
+            color: #003;
+            border-bottom-style: solid;
+            border-width: 3px;
+        }
+
+        .pln { color: #4d4d4c; }
+        .str { color: #718c00; }
+        .kwd { color: #8959a8; }
+        .com { color: #8e908c; }
+        .typ { color: #4271ae; }
+        .lit { color: #f5871f; }
+        .pun { color: #4d4d4c; }
+        .opn { color: #4d4d4c; }
+        .clo { color: #4d4d4c; }
+        .tag { color: #c82829; }
+        .atn { color: #f5871f; }
+        .atv { color: #3e999f; }
+        .dec { color: #f5871f; }
+        .var { color: #c82829; }
+        .fun { color: #4271ae; }
+
+        .prettyprint {
+          padding: 8px;
+          background-color: #fcfcfe;
+          border: 1px solid #e1e1e8;
+        }
+
+        .prettyprint.linenums {
+          -webkit-box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;
+             -moz-box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;
+                  box-shadow: inset 40px 0 0 #fbfbfc, inset 41px 0 0 #ececf0;
+        }
+
+        /* Specify class=linenums on a pre to get line numbering */
+        ol.linenums {
+          margin: 0 0 0 33px; /* IE indents via margin-left */
+        }
+        ol.linenums li {
+          padding-left: 12px;
+          color: #bebec5;
+          line-height: 18px;
+        }
+
+        pre {
+          overflow: auto;
+          word-wrap: normal;
+          white-space: pre;
+        }
+    </style>
+
+    <link rel="alternate" type="application/rss+xml" href="/atom.xml" title="RSS feed">
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-29851970-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </head>
+  <body onload="prettyPrint()">
+
+    <div class="navbar navbar-static-top navbar-default">
+      <div class="container">
+      <div class = "row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand"><a href="/">Ben Frederickson</a></span>
+        </div>
+        <div class="collapse navbar-collapse">
+<div class="visible-xs">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/blog/"><i class="fa fa-pencil-square-o"></i> Blog</a></li>
+            <li><a alt = "GitHub" href="http://github.com/benfred"><i class="fa fa-github"></i> GitHub</a></li>
+            <li><a alt = "Twitter" href="http://twitter.com/benfrederickson"><i class="fa fa-twitter"></i> Twitter</a></li>
+            <li><a alt = "RSS" href="/atom.xml"><i class="fa fa-rss"></i> RSS</a></li>
+          </ul>
+</div>
+<div class="hidden-xs">
+          <ul class="nav navbar-nav navbar-right navbar-icons">
+            <li><a href="/blog/">Blog</a></li>
+            <li><a alt = "GitHub" href="http://github.com/benfred"><i class="fa fa-github"></i></a></li>
+            <li><a alt = "Twitter" href="http://twitter.com/benfrederickson"><i class="fa fa-twitter"></i></a></li>
+            <li><a alt = "RSS" href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+          </ul>
+</div>
+        </div><!--/.nav-collapse -->
+      </div>
+      </div></div>
+    </div>
+
+    <div class="container">
+    <div class = "row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<div class="page-header" style="margin-top:0px">
+    <h2 style="margin-top:0px">
+    
+        <a href="/venn-diagrams-with-d3.js/">Venn Diagrams with D3.js</a>
+        
+    </h2>
+</div>
+
+<p>A couple of my goals for this year are to learn both Javascript and D3.js. Its
+gotten to the point where its embarrassing that I don't know Javascript, and
+I want to learn D3 since I keep on seeing so many beautiful looking
+visualizations being made with it. To get started with this, I thought I'd try use D3 to create the simplest possible visualization I could think of - the Venn diagram.</p>
+
+<p>An example of this code in action is below. You can set the sizes of each set, and the
+sizes of the set intersections - and the code will dynamically compute the best position
+for each set, and display it with D3:</p>
+
+<!--more-->
+
+
+<script src="d3.v3.min.js" charset="utf-8"></script>
+<script src="venn.js"></script>
+
+
+
+
+<div class="svgcheck well"><h5>Note: you need Javascript enabled and a SVG compatible browser to
+view the diagrams here!</h5><p>Its looking like you're missing javascript, or
+are running an old web browser that doesn't support SVG. If no diagrams show
+up then you might want to consider loading this up in a different browser.
+I've tested this with Chrome, Safari and Firefox only.</div>
+
+
+<script>
+function hasSVG() {
+    return document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure",
+    "1.1");
+}
+if (hasSVG()) {
+    d3.select(".svgcheck").attr("style", "display:none");
+}
+</script>
+
+
+
+
+<div style="float:left;padding:20px">
+    <table>
+    <tr>
+      <td>|A|</td>
+      <td>
+        <input class="input-mini venn_area" id="A" type="number" value="16">
+      </td>
+    </tr>
+    <tr>
+      <td>|B|</td>
+      <td>
+        <input class="input-mini venn_area" id="B" type="number" value="16">
+      </td>
+    </tr>
+    <tr>
+      <td>|C|</td>
+      <td>
+        <input class="input-mini venn_area" id="C" type="number" value="12">
+      </td>
+    </tr>
+    <tr>
+      <td>|A&#8745B|</td>
+      <td>
+        <input class="input-mini venn_area" id="A,B" type="number" value="4">
+      </td>
+    </tr>
+    <tr>
+      <td>|A&#8745C|</td>
+      <td>
+        <input class="input-mini venn_area" id="A,C" type="number" value="4">
+      </td>
+    </tr>
+    <tr>
+      <td>|B&#8745C|</td>
+      <td>
+        <input class="input-mini venn_area" id="B,C" type="number" value="3">
+      </td>
+    </tr>
+    <tr>
+      <td>|A&#8745B&#8745C|&nbsp</td>
+      <td>
+        <input class="input-mini venn_area" id="A,B,C" type="number" value="2">
+      </td>
+    </tr>
+    </table>
+</div>
+
+<!--  三个圆 进行绘制 -->
+<div id="dynamic"></div>
+<div style="clear: both;"></div>
+
+
+<script>
+function getSetIntersections() {
+    areas = d3.selectAll(".venn_area")[0].map(
+        function (element) { 
+            return { sets: element.id.split(","), 
+                     size: parseFloat(element.value)};} );
+    return areas;
+}
+
+var notfunny = [{sets: ["A"], size: 30}, 
+                 {sets: ["B"], size: 23},
+                 {sets: ["C"], size: 24},
+                 {size : 10, sets : ['A','B']},
+                 {size : 5, sets : ['A','C']},
+                 {size : 5, sets : ['B','C']},
+                 {size : 1, sets : ['A','B','C']}
+                 ];
+
+
+// draw the initial set
+var w = Math.min(480, document.documentElement.clientWidth-30);
+var chart = venn.VennDiagram().width(w).height(w * .8);
+
+d3.select("#dynamic").datum(notfunny).call(chart);
+
+</script>
+
+<!--四个圆形进行绘制 -->
+<div id="dyfour" style="margin-top:100px;"></div>
+<div style="clear: both;"></div>
+
+<script>
+/*var  medicalfour = [{sets: ["A"], size: 30}, 
+                    {sets: ["B"], size: 23},
+                    {sets: ["C"], size: 24},
+                    {sets: ["D"], size: 30},
+
+                    {size : 10, sets : ['A','B']},
+                    {size : 5, sets : ['A','C']},
+                    {size : 3, sets : ['A','D']},
+                    {size : 5, sets : ['B','C']},
+                    {size : 5, sets : ['B','D']},
+                    {size : 5, sets : ['C','D']},
+                    {size : 1, sets : ['A','B','C'],}
+                 ];*/
+
+var  medicalfour = [{sets: ["A"], size: 4.85}, 
+                    {sets: ["B"], size: 3.67},
+                    {sets: ["C"], size: 2.73},
+                    {sets: ["D"], size: 14.01},
+
+                    {size : 0.34, sets : ['A','B']},
+                    {size : 1.03, sets : ['A','C']},
+                    {size : 1.31, sets : ['A','D']},
+                    {size : 0.92, sets : ['B','C']},
+                    {size : 1.84, sets : ['B','D']},
+                    {size : 0.7, sets : ['C','D']},
+                    {size : 0.14, sets : ['A','B','C']},
+                    {size : 0.37, sets : ['A','B','D']},
+                    {size : 0.43, sets : ['A','C','D']},
+                    {size : 0.46, sets : ['B','C','D']},
+                    {size : 0.29, sets : ['A','B','C','D']},
+                  
+                 ];
+   
+var w = Math.min(480, document.documentElement.clientWidth-30);
+var chart = venn.VennDiagram().width(w).height(w * .8);
+d3.select("#dyfour").datum(medicalfour).call(chart);
+
+
+
+</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://static.benfrederickson.com.s3-website-us-east-1.amazonaws.com/google-code-prettify/prettify.js"></script>
+    <script src="http://static.benfrederickson.com.s3-website-us-east-1.amazonaws.com/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
